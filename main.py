@@ -1,20 +1,39 @@
-clients = "pablo,ricardo,"
+import sys
+
+clients = [
+    {
+        "name":"Pablo",
+        "company": "Google",
+        "email": "pablo@email.com",
+        "position": "Software engineer"
+    },
+    {
+        "name":"Ricardo",
+        "company": "Meta",
+        "email": "ricardo@email.com",
+        "position": "Data engineer"
+    }
+]
 
 
-def create_cliente(client_name):
+def create_cliente(client):
     global clients
 
-    if client_name not in clients:
-        clients += client_name
-        _add_comma()
+    if client not in clients:
+        clients.append(client)
     else:
-        print("Client already is in the clients list")
+        print("Client already is in the client\'s list")
 
 
 def list_clints():
-    global clients
-
-    print(clients)
+    for idx, client in enumerate(clients):
+        print('{uid} | {name} | {company} | {email} | {position}'.format(
+            uid = idx,
+            name = client['name'],
+            company = client['company'],
+            email = client['email'],
+            position = client['position']
+        ))
 
 
 def update_client(cliente_name, updated_client_name):
@@ -23,7 +42,7 @@ def update_client(cliente_name, updated_client_name):
     if cliente_name in clients:
         clients = clients.replace(client_name + ",", updated_client_name + ",")
     else:
-        print("Client is not in clients list")
+        print("Client is not in client\'s list")
 
 
 def delete_client(client_name):
@@ -32,7 +51,7 @@ def delete_client(client_name):
     if client_name in clients:
         clients = clients.replace(client_name + ",", "")
     else:
-        print("Client is not in clients list")
+        print("Client is not in client\'s list")
 
 
 def search_client(client_name):
@@ -56,14 +75,35 @@ def _print_welcom():
     print("*" * 50)
     print("What world you like to do today?")
     print("[C]reate clint")
+    print("[L]ist clients")
     print("[U]pdate client")
     print("[D]elete client")
     print("[S]earch client")
 
 
-def _get_client_name():
-    return input("What is the client name?")
+def _get_client_field(field_name):
+    field = None
 
+    while not field:
+        field = input("What is the client {}?".format(field_name))
+
+    return field
+
+
+def _get_client_name():
+    client_name = None
+
+    while not client_name:
+        client_name = input("What is the client name?")
+
+        if client_name == 'exit':
+            client_name = None
+            break
+
+        if not client_name:
+            sys.exit()
+
+    return client_name
 
 if __name__ == "__main__":
     _print_welcom()
@@ -72,8 +112,15 @@ if __name__ == "__main__":
     Command = Command.upper()
 
     if Command == "C":
-        client_name = _get_client_name()
-        create_cliente(client_name)
+        client = {
+            "name": _get_client_field('name'),
+            "company": _get_client_field('company'),
+            "email": _get_client_field('email'),
+            "position": _get_client_field('position'),
+        }
+        create_cliente(client)
+        list_clints()
+    elif Command == "L":
         list_clints()
     elif Command == "D":
         client_name = _get_client_name()
@@ -87,7 +134,7 @@ if __name__ == "__main__":
         found = search_client(client_name)
 
         if found:
-            print("The client is in the clients list")
+            print("The client is in the client\'s list")
         else:
             print("The client: {} is not in our clients list".format(client_name))
     else:
