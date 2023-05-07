@@ -1,19 +1,27 @@
 import sys
+import csv
+import os
 
-clients = [
-    {
-        "name":"Pablo",
-        "company": "Google",
-        "email": "pablo@email.com",
-        "position": "Software engineer"
-    },
-    {
-        "name":"Ricardo",
-        "company": "Meta",
-        "email": "ricardo@email.com",
-        "position": "Data engineer"
-    }
-]
+CLIENT_TABLE ='.clients.csv'
+CLIENT_SCHEMA = ['name', 'company', 'email', 'position']
+clients = []
+
+def _initialize_clients_from_storage():
+    with open(CLIENT_TABLE, mode='r') as f:
+        reader = csv.DictReader(f, fieldnames=CLIENT_SCHEMA)
+
+        for row in reader:
+            clients.append(row)
+
+
+def _save_clients_to_storage():
+    tmp_table_name = '{}.tmp'.format(CLIENT_TABLE)
+    with open(tmp_table_name, mode='w') as f:
+        writer = csv.DictWriter(f, fieldnames=CLIENT_SCHEMA)
+        writer.writerows(clients)
+
+        os.remove(CLIENT_TABLE)
+        os.rename(tmp_table_name, CLIENT_TABLE)
 
 
 def create_cliente(client):
@@ -106,6 +114,7 @@ def _get_client_name():
     return client_name
 
 if __name__ == "__main__":
+    _initialize_clients_from_storage()
     _print_welcom()
 
     Command = input()
@@ -140,4 +149,4 @@ if __name__ == "__main__":
     else:
         print("Invalid command")
 
-    print(clients)
+    _save_clients_to_storage()
