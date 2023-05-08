@@ -34,6 +34,9 @@ def create_cliente(client):
 
 
 def list_clints():
+    print('uid | name | company | email | position ')
+    print('*'*50)
+
     for idx, client in enumerate(clients):
         print('{uid} | {name} | {company} | {email} | {position}'.format(
             uid = idx,
@@ -44,29 +47,28 @@ def list_clints():
         ))
 
 
-def update_client(cliente_name, updated_client_name):
+def update_client(client_id, updated_client):
     global clients
 
-    if cliente_name in clients:
-        clients = clients.replace(client_name + ",", updated_client_name + ",")
+    if len(clients) - 1 >= client_id:
+        clients[client_id] = updated_client
     else:
         print("Client is not in client\'s list")
 
 
-def delete_client(client_name):
+def delete_client(client_id):
     global clients
 
-    if client_name in clients:
-        clients = clients.replace(client_name + ",", "")
-    else:
-        print("Client is not in client\'s list")
+    for idx, dummy_client in enumerate(clients):
+        if idx == client_id:
+            del clients[idx]
+            break
 
 
 def search_client(client_name):
-    client_list = clients.split(",")
 
-    for client in client_list:
-        if client != client_name:
+    for client in clients:
+        if client['name'] != client_name:
             continue
         else:
             return True
@@ -132,12 +134,12 @@ if __name__ == "__main__":
     elif Command == "L":
         list_clints()
     elif Command == "D":
-        client_name = _get_client_name()
-        delete_client(client_name)
+        client_id = int(input('What is the client?'))
+        delete_client(client_id)
     elif Command == "U":
-        client_name = _get_client_name()
-        updated_client_name = input("What is the updated client name")
-        update_client(client_name, updated_client_name)
+        client_id = _get_client_field('id')
+        updated_client = input("What is the updated client name?")
+        update_client(client_id, updated_client)
     elif Command == "S":
         client_name = _get_client_name()
         found = search_client(client_name)
