@@ -1,5 +1,13 @@
 clients = "pablo,ricardo,"
 
+def search_client(client_name):
+    client_list = clients.split(",")
+    for client in client_list:
+        if client != client_name:
+            continue
+        else:
+            return True
+
 def create_cliente(client_name):
     global clients
 
@@ -41,6 +49,7 @@ def _print_welcom():
     print("[C]reate clint")
     print("[U]pdate client")
     print("[D]elete client")
+    print("[S]earch client")
 
 def _get_client_name():
     return input("What is the client name?")
@@ -58,10 +67,17 @@ if __name__ == "__main__":
     elif Command == "D":
         client_name = _get_client_name()
         delete_client(client_name)
-    elif Command == 'U':
+    elif Command == "U":
         client_name = _get_client_name()
         updated_client_name = input("What is the updated client name")
         update_client(client_name, updated_client_name)
+    elif Command == "S":
+        client_name = _get_client_name()
+        found = search_client(client_name)
+        if found:
+            print("The client is in the clients list")
+        else:
+            print("The client: {} is not in our clients list".format(client_name))
     else:
         print("Invalid command")
 
