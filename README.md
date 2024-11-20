@@ -38,11 +38,6 @@ This is a client management system developed in Python using Tkinter for the gra
     - Use the buttons in the interface to manage clients.
     - Enter the necessary data in the forms for each action.
 
-## Try it on Replit
-
-You can try this project online using Replit. Click the following link to open the project in Replit:
-
-[Try it on Replit](https://replit.com/join/sdjpeubnjs-yorberrojas15)
 
 ## Project Structure
 
